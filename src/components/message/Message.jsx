@@ -4,6 +4,11 @@ import {format} from 'timeago.js'
 import axios from 'axios';
 
 const Message = ({ own, message }) => {
+  const BASE_URL =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000/api"
+      : "https://mern-social-server-92ic.onrender.com/api"; 
+      
     // console.log(message.sender)
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [user, setUser] = useState(null);
@@ -11,7 +16,7 @@ const Message = ({ own, message }) => {
     useEffect(() => {
         const getUser = async () => {
           try {
-            const res = await axios.get("/users?userId=" + message?.sender)
+            const res = await axios.get(`${BASE_URL}/users?userId=` + message?.sender)
             // console.log(res)
             setUser(res.data);
           } catch (err) {

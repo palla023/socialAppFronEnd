@@ -4,6 +4,11 @@ import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 
 const Conversation = ({ conversation }) => {
+  const BASE_URL =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000/api"
+      : "https://mern-social-server-92ic.onrender.com/api"; 
+      
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState(null);
   // console.log(user)
@@ -13,7 +18,7 @@ const Conversation = ({ conversation }) => {
     const friendId = conversation.members.find(member => member !== currentUser._id) //[members]=> one is loggedId,another one is friendId
     const getUser = async () => {
       try {
-        const res = await axios.get("/users?userId=" + friendId)
+        const res = await axios.get(`${BASE_URL}/users?userId=` + friendId)
         // console.log(res)
         setUser(res.data);
       } catch (err) {

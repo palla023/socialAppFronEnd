@@ -8,7 +8,10 @@ import axios from "axios";
 import { useParams } from "react-router";
 
 export default function Profile() {
-
+  const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/api"
+    : "https://mern-social-server-92ic.onrender.com/api"; 
   //Access the Public folder 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
@@ -17,7 +20,7 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await axios.get(`/users?username=${params.username}`) //Passing by Query method
+      const res = await axios.get(`${BASE_URL}/users?username=${params.username}`) //Passing by Query method
       // console.log(res.data);
       setUser(res.data)
      // console.log(res.data)

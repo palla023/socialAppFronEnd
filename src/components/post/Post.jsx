@@ -15,6 +15,10 @@ export default function Post({ post }) {
   //Access the Pubile folder 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user: currentUser } = useContext(AuthContext);
+  const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/api"
+    : "https://mern-social-server-92ic.onrender.com/api"; 
 
   //If we like another post after dislikng the current Post , it will give response as disliked
   //to overcome that one , we can set the condition like ,in Post Likes userId is included or not
@@ -24,7 +28,7 @@ export default function Post({ post }) {
 
   const likeHandler =async () => {
     try {
-      await axios.put('/posts/' + post._id + '/like', { userId: currentUser._id })
+      await axios.put(`${BASE_URL}/posts/` + post._id + '/like', { userId: currentUser._id })
     } catch (err) { }
     setLike(isLiked ? like - 1 : like + 1)
     setIsLiked(!isLiked)
@@ -38,7 +42,7 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`) //Passing by Query method
+      const res = await axios.get(`${BASE_URL}/users?userId=${post.userId}`) //Passing by Query method
       // console.log(res.data);
       setUser(res.data)
       // console.log(res.data)

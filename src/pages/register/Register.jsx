@@ -4,6 +4,10 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function Register() {
+  const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/api"
+    : "https://mern-social-server-92ic.onrender.com/api"; 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -30,7 +34,7 @@ export default function Register() {
         return;
       }
       try {
-        await axios.post('/auth/register', formData)
+        await axios.post(`${BASE_URL}/auth/register`, formData)
         console.log('Submitting to API:', formData);
         navigate('/login')
       } catch (err) {

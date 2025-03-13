@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import "./chatOnline.css";
 
 export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
+
+  const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/api"
+    : "https://mern-social-server-92ic.onrender.com/api"; 
+
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
 
@@ -11,7 +17,7 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
   //Get Every followings for the current user
   useEffect(() => {
     const getFriends = async () => {
-      const res = await axios.get("/users/friends/" + currentId);
+      const res = await axios.get(`${BASE_URL}/users/friends/` + currentId);
       setFriends(res.data);
     };
 
@@ -26,7 +32,7 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
   const handleClick = async (user) => {
     try {
       const res = await axios.get(
-        `/conversations/find/${currentId}/${user._id}`
+        `${BASE_URL}/conversations/find/${currentId}/${user._id}`
       );
       setCurrentChat(res.data);
     } catch (err) {

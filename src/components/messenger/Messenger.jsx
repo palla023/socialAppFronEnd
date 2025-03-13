@@ -18,7 +18,11 @@ const Messenger = () => {
     const scrollRef = useRef();
     const socket = useRef();
     const { user } = useContext(AuthContext);
-
+    
+    const BASE_URL =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000/api"
+      : "https://mern-social-server-92ic.onrender.com/api"; 
 
     // console.log(user)
     // when a user loggedin , it will connect to a server only one time
@@ -57,7 +61,7 @@ const Messenger = () => {
     useEffect(() => {
         const getConversations = async () => {
             try {
-                const res = await axios.get("/conversations/" + user._id);
+                const res = await axios.get(`${BASE_URL}/conversations/` + user._id);
                 setConversations(res.data);
             } catch (err) {
                 console.log(err);
@@ -69,7 +73,7 @@ const Messenger = () => {
     useEffect(() => {
         const getMessages = async () => {
             try {
-                const res = await axios.get("/messages/" + currentChat?._id);
+                const res = await axios.get(`${BASE_URL}/messages/` + currentChat?._id);
                 setMessages(res.data);
             } catch (err) { console.log(err) }
         }
@@ -97,7 +101,7 @@ const Messenger = () => {
         });
 
         try {
-            const res = await axios.post("/messages", message);
+            const res = await axios.post(`${BASE_URL}/messages`, message);
             setMessages([...messages, res.data]);
             setNewMessage("");
 
